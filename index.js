@@ -1,10 +1,12 @@
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3001;
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const cTable = require("console.table");
 const db = mysql.createConnection(
   {
     host: "localhost",
-    port: 3301,
     user: "root",
     password: "rootroot",
     database: "employeeDb",
@@ -24,9 +26,15 @@ const question = [
 ];
 
 function init() {
-  inquirer.prompt(question).then((response) => {
+  inquirer.prompt(question)
+  .then((response) => {
     switch (response.choice) {
       case "View departments":
+        db.query("SELECT * from department;", (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        })
         break;
       case "View roles":
         break;
@@ -53,10 +61,10 @@ function init() {
 // work on the prompts for adding to the table
 // file with helper functions
 
-connection.execute("SELECT * FROM `table` WHERE `name` = ? AND `age` > ?", [], function (err, results, fields) {
-  console.log(results); // results contains rows returned by server
-  console.log(fields); // fields contains extra meta data about results, if available
+// connection.execute("SELECT * FROM `table` WHERE `name` = ? AND `age` > ?", [], function (err, results, fields) {
+//   console.log(results); // results contains rows returned by server
+//   console.log(fields); // fields contains extra meta data about results, if available
 
   // If you execute same statement again, it will be picked from a LRU cache
   // which will save query preparation time and give better performance
-});
+
