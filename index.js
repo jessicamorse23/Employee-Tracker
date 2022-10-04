@@ -14,6 +14,8 @@ const db = mysql.createConnection(
   console.log("connected")
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // questions for user 
 const question = [
@@ -67,4 +69,6 @@ function init() {
 
   // If you execute same statement again, it will be picked from a LRU cache
   // which will save query preparation time and give better performance
+
+  app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
