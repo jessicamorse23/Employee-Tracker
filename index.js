@@ -27,7 +27,7 @@ const question = [
   },
 ];
 
-function init() {
+function start() {
   inquirer.prompt(question)
   .then((response) => {
     switch (response.choice) {
@@ -51,6 +51,7 @@ function init() {
     }
   });
 }
+module.exports = start
 
 
 // database file (DB)
