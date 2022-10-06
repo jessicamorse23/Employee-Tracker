@@ -13,7 +13,7 @@ VALUES ("Sales Lead", 100000, 1),
 ("Lawyer", 190000, 4); 
 
 INSERT INTO employeeTable (firstName, lastName, roleId, managerId)
-VALUES ("Jessica", "Morse", 1, 2),
-("Rex", "Doodle", 1, null),
-("Sally", "Smith", 1, 2),
-("Lucy", "Berry", 5, 8);
+VALUES ("Jessica", "Morse", 1, null),
+("Rex", "Doodle", 3, null),
+("Sally", "Smith", 2, 2),
+("Lucy", "Berry", 4, 3);
