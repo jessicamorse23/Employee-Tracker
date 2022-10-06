@@ -6,11 +6,11 @@ VALUES ("Sales"),
 
 INSERT INTO roleTable (title, salary, departmentId)
 VALUES ("Sales Lead", 100000, 1),
-("Lead Engineer", 150000, 1),
-("Software Engineer", 120000, 1),
-("Account Manager", 160000, 1),
-("Accountant", 125000, 1),
-("Lawyer", 190000, 1); 
+("Lead Engineer", 150000, 2),
+("Software Engineer", 120000, 2),
+("Account Manager", 160000, 3),
+("Accountant", 125000, 3),
+("Lawyer", 190000, 4); 
 
 INSERT INTO employeeTable (firstName, lastName, roleId, managerId)
 VALUES ("Jessica", "Morse", 1, 2),
