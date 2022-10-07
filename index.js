@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 // // questions for user
- (start) => {
+(start) => {
   inquirer
     .createPromptModule({
       type: "list",
@@ -58,9 +58,9 @@ app.use(express.urlencoded({ extended: true }));
           finish();
       }
     });
-}
+};
 
- (addDept) => {
+(addDept) => {
   inquirer
     .prompt({
       type: "input",
@@ -69,85 +69,146 @@ app.use(express.urlencoded({ extended: true }));
     })
 
     .then(function (response) {
-      connection.query("INSERT INTO department (name) VALUES (?)", [response.deptName], function (err, res) {
+      connection.query("INSERT INTO departmentTable (name) VALUES (?)", [response.deptName], function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
       });
     });
-}
+};
 
- (addEmployee) => {
+(addEmployee) => {
   inquirer
-  .prompt([
-    {
-      type: "input",
-      message: "Role title:",
-      name: "roleTitle"
-    },
+    .prompt([
+      {
+        type: "input",
+        message: "Role title:",
+        name: "roleTitle",
+      },
 
-    {
-      type: "input",
-      message: "Role salary:",
-      name: "roleSalary"
-    },
+      {
+        type: "input",
+        message: "Role salary:",
+        name: "roleSalary",
+      },
 
-    {
-      type: "number",
-      message: "Department ID:",
-      name: "deptID"
-    }
-  ])
-  .then(function(response) {
-    connection.query("INSERT INTO role (title, salary, departmentId) VALUES (?, ?, ?)", [response.roleTitle, response.salaryTotal, response.deptId], function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      start();
+      {
+        type: "number",
+        message: "Department ID:",
+        name: "deptID",
+      },
+    ])
+    .then(function (response) {
+      connection.query(
+        "INSERT INTO roleTable (title, salary, departmentId) VALUES (?, ?, ?)",
+        [response.roleTitle, response.salaryTotal, response.deptId],
+        function (err, res) {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
+};
+
+(addEmployee) =>
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Employee first name:",
+        name: "firstName",
+      },
+
+      {
+        type: "input",
+        message: "Employee last name:",
+        name: "lastName",
+      },
+
+      {
+        type: "number",
+        message: "Employee role ID:",
+        name: "roleId",
+      },
+
+      {
+        type: "number",
+        message: "Enter Employee's Manager ID number:",
+        name: "managerId",
+      },
+    ])
+    .then(function (response) {
+      connection.query(
+        "INSERT INTO employeeTable (firstName, lastName, roleId, managerId) VALUES (?, ?, ?, ?)",
+        [response.firstName, response.lastName, response.roleId, response.managerId],
+        function (err, res) {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
+    });
+
+(updateEmployee) => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Which empoyee are you updating?",
+        name: "updateEmployee",
+      },
+
+      {
+        type: "input",
+        message: "What are you updating?",
+        name: "updateRole",
+      },
+    ])
+    .then(function (answer) {
+      connection.query(
+        "UPDATE employeeTable SET roleId=? WHERE firstName= ?",
+        [answer.updateEmployee, answer.updateRole],
+        function (err, res) {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
+    });
+};
+
+(viewDept) => {
+  let query = "SELECT * FROM departmentTable";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+};
+
+(viewRoles) => {
+  let query = "SELECT * FROM roleTable";
+  connection.query(query, function(err, res) {
+    if (err) throw err; 
+    console.table(res);
+    start();
   });
 }
 
-(addEmployee) => 
-inquirer 
-.prompt([
-  {
-    type: "input",
-    message: "Employee first name:",
-    name: "firstName",
-  },
-
-  {  
-  type: "input",
-  message: "Employee last name:",
-  name: "lastName",
-  },
-
-  {  
-  type: "number",
-  message: "Employee role ID:",
-  name: "roleId",
-
-  },
-
-  {  
-    type: "number",
-    message: "Enter Employee's Manager ID number:",
-    name: "managerId",
-  
-    }
-  ])
-  .then(function(response) {
-    connection.query("INSERT INT) employee (firstName, lastName, roleId, managerId) VALUES (?, ?, ?, ?)", [response.firstName, response.lastName, response.roleId, response.managerId], function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      start();
-
-    });
+(viewEmployee) => {
+  let query = "SELECT * FROM employeeTable";
+  connection.query(query, function(err, res) {
+    if (err) throw err; 
+    console.table(res);
+    start();
   });
+}
 
-
-    
-
+// (finish) => {
+//   connection.end();
+//   process.exit();
+// }
 // database file (DB)
 // front end folder
 //  back end folder
