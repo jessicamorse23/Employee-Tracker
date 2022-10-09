@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 // // questions for user
-(start) => {
+function start() {
   inquirer
     .createPromptModule({
       type: "list",
@@ -60,7 +60,7 @@ app.use(express.urlencoded({ extended: true }));
     });
 };
 
-(addDept) => {
+function addDept() {
   inquirer
     .prompt({
       type: "input",
@@ -77,7 +77,7 @@ app.use(express.urlencoded({ extended: true }));
     });
 };
 
-(addEmployee) => {
+function addRole() {
   inquirer
     .prompt([
       {
@@ -111,7 +111,7 @@ app.use(express.urlencoded({ extended: true }));
     });
 };
 
-(addEmployee) =>
+function addEmployee() {
   inquirer
     .prompt([
       {
@@ -149,8 +149,9 @@ app.use(express.urlencoded({ extended: true }));
         }
       );
     });
+  };
 
-(updateEmployee) => {
+function updateEmployee() {
   inquirer
     .prompt([
       {
@@ -178,7 +179,7 @@ app.use(express.urlencoded({ extended: true }));
     });
 };
 
-(viewDept) => {
+function viewDept() {
   let query = "SELECT * FROM departmentTable";
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -187,7 +188,7 @@ app.use(express.urlencoded({ extended: true }));
   });
 };
 
-(viewRoles) => {
+function viewRoles() {
   let query = "SELECT * FROM roleTable";
   connection.query(query, function(err, res) {
     if (err) throw err; 
@@ -196,14 +197,14 @@ app.use(express.urlencoded({ extended: true }));
   });
 }
 
-(viewEmployee) => {
+function viewEmployees() {
   let query = "SELECT * FROM employeeTable";
   connection.query(query, function(err, res) {
     if (err) throw err; 
     console.table(res);
     start();
   });
-}
+};
 
 // (finish) => {
 //   connection.end();
