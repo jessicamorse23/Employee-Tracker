@@ -4,7 +4,7 @@ const addEmployee = require("./lib/employee");
 const updateEmployee = require("./lib/updateEmployee");
 const addRole = require("./lib/role");
 const addDept = require("./lib/department");
-
+const db = require("./db");
 const question = [
   {
     type: "list",

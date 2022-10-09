@@ -5,4 +5,6 @@ class DB {
         this.connection = connection;
   }} 
 
+  module.exports = new DB(connection);
+
 //   I had help with this code from Tucker Larrabee at askBCS
