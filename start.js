@@ -15,8 +15,10 @@ const question = [
 ];
 
 function start() {
-  inquirer.prompt(question).then((response) => {
-    switch (response.option) {
+  inquirer
+  .prompt(question)
+  .then((response) => {
+    switch (response.selection) {
       case "View Departments":
         db.query("SELECT * FROM departmentTable;", (err, result) => {
           if (err) {
@@ -63,8 +65,8 @@ function start() {
       case "Update employee role":
         updateEmployee(start);
         break;
-      default:
-        finish();
+      // default:
+      //   finish();
     }
   });
 }
