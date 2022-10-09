@@ -1,17 +1,9 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
 const cTable = require("console.table");
 const addEmployee = require("./lib/employee");
-const updateEmployee = require("./lib/updateEmployee")
+const updateEmployee = require("./lib/updateEmployee");
 const addRole = require("./lib/role");
 const addDept = require("./lib/department");
-const db = mysql.createConnection({
-  host: "localhost",
-//   port: 3306,
-  user: "root",
-  password: "rootroot",
-  database: "employeeDb",
-});
 
 const question = [
   {
@@ -64,6 +56,7 @@ function start() {
         break;
       case "Add a role":
         addRole(start);
+        break;
       case "Add an employee":
         addEmployee(start);
         break;
