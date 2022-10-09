@@ -93,39 +93,6 @@ function addDept() {
     });
 };
 
-function addRole() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "Role title:",
-        name: "roleTitle",
-      },
-
-      {
-        type: "input",
-        message: "Role salary:",
-        name: "roleSalary",
-      },
-
-      {
-        type: "number",
-        message: "Department ID:",
-        name: "deptID",
-      },
-    ]).then(function(answer) {
-      connection.query(
-        "INSERT INTO roleTable (title, salary, departmentId) VALUES (?, ?, ?)",
-        [answer.roleTitle, answer.salaryTotal, answer.deptId],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          start();
-        }
-      );
-    });
-};
-
 
 
 function updateEmployee() {
