@@ -33,17 +33,27 @@ connection.connect(function(err) {
 });
 
 // // questions for user
-function start() {
-  inquirer
-    .prompt({
-      type: "list",
+
+const question = [
+  {
+    type: "list",
       choices: ["Add a department", "Add a role", "Add an employee", "View Departments", "View Roles", "View Employees", "I'm Finished"],
       message: "What would you like to do?",
       name: "selection",
-    }).then(function(selection) {
-      console.log(selection);
+  }
+]
 
-      switch (selection.option) {
+function start() {
+  inquirer
+    .prompt(question) 
+    .then(response => {
+      switch (response.option) {
+        case "View Departments":
+         db.query("SELECT * FROM department;", (err, result)=> {
+          if (err) {
+            console.log(err);
+          } console.table(result)
+         });
         case "Add a department":
           addDept();
           break;
@@ -52,8 +62,6 @@ function start() {
         case "Add an employee":
           addEmployee();
           break;
-        case "View Departments":
-          viewDept();
         case "View Roles":
           viewRoles();
           break;
@@ -68,6 +76,7 @@ function start() {
       }
     });
 };
+module.exports = start
 
 function addDept() {
   inquirer
@@ -75,10 +84,8 @@ function addDept() {
       type: "input",
       message: "Department name:",
       name: "deptName",
-    })
-
-    .then(function(response) {
-      connection.query("INSERT INTO departmentTable (name) VALUES (?)", [response.deptName], function (err, res) {
+    }).then(function(answer) {
+      connection.query("INSERT INTO departmentTable (name) VALUES (?)", [answer.deptName], function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
@@ -106,11 +113,10 @@ function addRole() {
         message: "Department ID:",
         name: "deptID",
       },
-    ])
-    .then(function (response) {
+    ]).then(function(answer) {
       connection.query(
         "INSERT INTO roleTable (title, salary, departmentId) VALUES (?, ?, ?)",
-        [response.roleTitle, response.salaryTotal, response.deptId],
+        [answer.roleTitle, answer.salaryTotal, answer.deptId],
         function (err, res) {
           if (err) throw err;
           console.table(res);
@@ -120,45 +126,7 @@ function addRole() {
     });
 };
 
-function addEmployee() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "Employee first name:",
-        name: "firstName",
-      },
 
-      {
-        type: "input",
-        message: "Employee last name:",
-        name: "lastName",
-      },
-
-      {
-        type: "number",
-        message: "Employee role ID:",
-        name: "roleId",
-      },
-
-      {
-        type: "number",
-        message: "Enter Employee's Manager ID number:",
-        name: "managerId",
-      },
-    ])
-    .then(function (response) {
-      connection.query(
-        "INSERT INTO employeeTable (firstName, lastName, roleId, managerId) VALUES (?, ?, ?, ?)",
-        [response.firstName, response.lastName, response.roleId, response.managerId],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          start();
-        }
-      );
-    });
-  };
 
 function updateEmployee() {
   inquirer
@@ -174,8 +142,7 @@ function updateEmployee() {
         message: "What are you updating?",
         name: "updateRole",
       },
-    ])
-    .then(function (answer) {
+    ]).then(function(answer) {
       connection.query(
         "UPDATE employeeTable SET roleId=? WHERE firstName= ?",
         [answer.updateEmployee, answer.updateRole],
