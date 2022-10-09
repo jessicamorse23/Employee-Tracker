@@ -23,10 +23,10 @@ function start() {
       type: "list",
       choices: ["Add a department", "Add a role", "Add an employee", "View Departments", "View Roles", "View Employees", "I'm Finished"],
       message: "What would you like to do?",
-      name: "selection",
+      name: "selection"
     })
     .then(function (task) {
-      console.log(selection);
+      console.log(task.selection, "selection");
       switch (task.selection) {
         case "Add a department":
           addDept();
