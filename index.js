@@ -1,43 +1,49 @@
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3001;
+// const express = require("express");
+// const app = express();
+// const PORT = process.env.PORT || 3001;
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const cTable = require("console.table");
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    user: "root",
-    password: "rootroot",
-    database: "employeeDb",
-  },
-  console.log("connected")
-);
+const db = require(".");
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "rootroot",
+  database: "employeeDb",
+})
+// const db = mysql.createConnection(
+//   {
+//     host: "localhost",
+//     user: "root",
+//     password: "rootroot",
+//     database: "employeeDb",
+//   },
+//   console.log("connected")
+// );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
-// // https://www.tabnine.com/code/javascript/functions/mysql/Connection/threadId?snippet=5f64b8e6f93c3aaf60e0df20 - source for connection code
-// connection.connect(function (err) {
-//   if (err) throw err;
-//   //  console.error('error connecting: ' + err.stack);
-//   //  return;
-//   console.log("connected as id " + connection.threadId);
-//   start();
-// });
+// https://www.tabnine.com/code/javascript/functions/mysql/Connection/threadId?snippet=5f64b8e6f93c3aaf60e0df20 - source for connection code
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("connected as id" + connection.threadId);
+  start();
+});
 
 // // questions for user
 function start() {
   inquirer
-    .createPromptModule({
+    .prompt({
       type: "list",
       choices: ["Add a department", "Add a role", "Add an employee", "View Departments", "View Roles", "View Employees", "I'm Finished"],
       message: "What would you like to do?",
       name: "selection",
-    })
-    .then((option) => {
-      console.log(option);
-      switch (option.selection) {
+    }).then(function(selection) {
+      console.log(selection);
+
+      switch (selection.option) {
         case "Add a department":
           addDept();
           break;
@@ -54,6 +60,9 @@ function start() {
         case "View Employees":
           viewEmployees();
           break;
+          case "Update employee role":
+            updateEmployee();
+            break;
         default:
           finish();
       }
@@ -68,7 +77,7 @@ function addDept() {
       name: "deptName",
     })
 
-    .then(function (response) {
+    .then(function(response) {
       connection.query("INSERT INTO departmentTable (name) VALUES (?)", [response.deptName], function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -206,6 +215,11 @@ function viewEmployees() {
   });
 };
 
+function finish() {
+  connection.end();
+  process.exit();
+}
+
 // (finish) => {
 //   connection.end();
 //   process.exit();
@@ -227,4 +241,4 @@ function viewEmployees() {
 // If you execute same statement again, it will be picked from a LRU cache
 // which will save query preparation time and give better performance
 
-app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
+// app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
