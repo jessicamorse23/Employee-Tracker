@@ -16,4 +16,10 @@ INSERT INTO employeeTable (firstName, lastName, roleId, managerId)
 VALUES ("Jessica", "Morse", 1, null),
 ("Rex", "Doodle", 3, null),
 ("Sally", "Smith", 2, 2),
-("Lucy", "Berry", 4, 3);
+("Lucy", "Berry", 4, 3),
+INSERT INTO employeeTable (firstName, lastName, roleId, managerId)
+VALUES ("Jessica", "Morse", 1, null),
+("Rex", "Doodle", 3, null),
+("Sally", "Smith", 2, 2),
+("Lucy", "Berry", 4, 3),
+("Daphne", "Reed", 4, 4);

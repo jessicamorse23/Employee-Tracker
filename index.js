@@ -113,12 +113,12 @@ function addEmployee() {
         name: "lastName",
       },
       {
-        type: "number",
+        type: "input",
         message: "Employee role ID:",
         name: "roleId",
       },
       {
-        type: "number",
+        type: "input",
         message: "Enter Employee's Manager ID number:",
         name: "managerId",
       },
