@@ -33,6 +33,7 @@ function start() {
           break;
         case "Add a role":
           addRole();
+          break;
         case "Add an employee":
           addEmployee();
           break;
@@ -62,14 +63,13 @@ function addDept() {
       name: "deptName",
       }
     ])
-    .then((answer) => {
+    .then(function (answer) {
       connection.query("INSERT INTO departmentTable (name) VALUES (?)", [answer.deptName], 
       function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
-      }
-      );
+      });
     });
 }
 function addRole() {
@@ -194,3 +194,4 @@ function finish() {
   connection.end();
   process.exit();
 }
+
