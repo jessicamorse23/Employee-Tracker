@@ -1,6 +1,5 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const cTable = require("console.table");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -21,11 +20,12 @@ function start() {
   inquirer
     .prompt({
       type: "list",
-      choices: ["Add a department", "Add a role", "Add an employee", "View Departments", "View Roles", "View Employees", "I'm Finished"],
+      choices: ["Add a department", "Add a role", "Add an employee", "View Departments", "View Roles", "View Employees", "Update Employee", "I'm Finished"],
       message: "What would you like to do?",
       name: "selection"
     })
-    .then(function (task) {
+ 
+    .then(function(task) {
       console.log(task.selection, "selection");
       switch (task.selection) {
         case "Add a department":
@@ -47,7 +47,7 @@ function start() {
         case "Update employee role":
           updateEmployee();
           break;
-        case "I'm finshed":
+        default:
           connection.end();
       }
     });
@@ -55,17 +55,21 @@ function start() {
 
 function addDept() {
   inquirer
-    .prompt({
+    .prompt([
+      {
       type: "input",
       message: "Department name:",
       name: "deptName",
-    })
-    .then(function (answer) {
-      connection.query("INSERT INTO departmentTable (name) VALUES (?)", [answer.deptName], function (err, res) {
+      }
+    ])
+    .then((answer) => {
+      connection.query("INSERT INTO departmentTable (name) VALUES (?)", [answer.deptName], 
+      function (err, res) {
         if (err) throw err;
         console.table(res);
         start();
-      });
+      }
+      );
     });
 }
 function addRole() {
@@ -74,12 +78,12 @@ function addRole() {
       {
         type: "input",
         message: "Role title:",
-        name: "roleTitle",
+        name: "roleTitle"
       },
       {
         type: "input",
         message: "Role salary:",
-        name: "roleSalary",
+        name: "roleSalary"
       },
       {
         type: "number",
@@ -87,7 +91,7 @@ function addRole() {
         name: "deptID",
       },
     ])
-    .then(function (answer) {
+    .then((answer) => {
       connection.query(
         "INSERT INTO roleTable (title, salary, departmentId) VALUES (?, ?, ?)",
         [answer.roleTitle, answer.salaryTotal, answer.deptId],
@@ -105,17 +109,17 @@ function addEmployee() {
       {
         type: "input",
         message: "Employee first name:",
-        name: "firstName",
+        name: "firstName"
       },
       {
         type: "input",
         message: "Employee last name:",
-        name: "lastName",
+        name: "lastName"
       },
       {
         type: "input",
         message: "Employee role ID:",
-        name: "roleId",
+        name: "roleId"
       },
       {
         type: "input",
@@ -141,7 +145,7 @@ function updateEmployee() {
       {
         type: "input",
         message: "Which empoyee are you updating?",
-        name: "updateEmployee",
+        name: "updateEmployee"
       },
       {
         type: "input",
@@ -151,7 +155,7 @@ function updateEmployee() {
     ])
     .then(function (answer) {
       connection.query(
-        "UPDATE employeeTable SET roleId=? WHERE firstName= ?",
+        "UPDATE employeeTable SET roleId=? WHERE firstName= (?)",
         [answer.updateEmployee, answer.updateRole],
         function (err, res) {
           if (err) throw err;
